@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Define el array de nombres a buscar
+packages=("nodejs" "nginx" "python" "java")
+
+# Función para buscar RPM instalados y ejecutables en el sistema
+buscar_paquete() {
+    package_version=$1
+    
+    echo "Buscando archivos RPM instalados relacionados con '$package_version'..."
+    # Busca RPMs instalados que coincidan con el paquete y la versión
+    rpm -qa | grep "$package_version"
+
+    echo "Buscando ejecutables en el sistema relacionados con '$package_version'..."
+    # Busca ejecutables en el sistema que coincidan con el nombre y la versión
+    find /usr/bin /usr/local/bin /opt -type f -name "$package_version*" -executable
+}
+
+# Itera sobre cada nombre en el array
+for package in "${packages[@]}"; do
+    echo "-----------------------------"
+    echo "Buscando: $package"
+    echo "-----------------------------"
+    buscar_paquete "$package"
+    echo ""
+done
+
+echo "Búsqueda completa."
+
